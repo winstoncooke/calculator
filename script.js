@@ -1,11 +1,10 @@
 let result = 0;
 let currentInputArray = [];
-let runningInputArray = [];
-let equationArray = [];
+let memoryArray = [];
 let displayArray = [];
 let acCounter = 0;
 let equalState = 'addition';
-isEqualStateActive = false;
+let isEqualStateActive = false;
 
 const resultDisplay = document.getElementById('result');
 const clear = document.getElementById('clear');
@@ -18,102 +17,106 @@ const subtraction = document.getElementById('subtract').addEventListener('click'
 const addition = document.getElementById('add').addEventListener('click', add);
 const equal = document.getElementById('equal').addEventListener('click', calculateResult);
 const decimal = document.getElementById('decimal').addEventListener('click', addDecimal);
-const zeroButton = document.getElementById('0').addEventListener('click', (e) => {inputValue(0)});
-const oneButton = document.getElementById('1').addEventListener('click', (e) => {inputValue(1)});
-const twoButton = document.getElementById('2').addEventListener('click', (e) => {inputValue(2)});
-const threeButton = document.getElementById('3').addEventListener('click', (e) => {inputValue(3)});
-const fourButton = document.getElementById('4').addEventListener('click', (e) => {inputValue(4)});
-const fiveButton = document.getElementById('5').addEventListener('click', (e) => {inputValue(5)});
-const sixButton = document.getElementById('6').addEventListener('click', (e) => {inputValue(6)});
-const sevenButton = document.getElementById('7').addEventListener('click', (e) => {inputValue(7)});
-const eightButton = document.getElementById('8').addEventListener('click', (e) => {inputValue(8)});
-const nineButton = document.getElementById('9').addEventListener('click', (e) => {inputValue(9)});
+const zeroButton = document.getElementById('zero').addEventListener('click', (e) => {inputValue(0)});
+const oneButton = document.getElementById('one').addEventListener('click', (e) => {inputValue(1)});
+const twoButton = document.getElementById('two').addEventListener('click', (e) => {inputValue(2)});
+const threeButton = document.getElementById('three').addEventListener('click', (e) => {inputValue(3)});
+const fourButton = document.getElementById('four').addEventListener('click', (e) => {inputValue(4)});
+const fiveButton = document.getElementById('five').addEventListener('click', (e) => {inputValue(5)});
+const sixButton = document.getElementById('six').addEventListener('click', (e) => {inputValue(6)});
+const sevenButton = document.getElementById('seven').addEventListener('click', (e) => {inputValue(7)});
+const eightButton = document.getElementById('eight').addEventListener('click', (e) => {inputValue(8)});
+const nineButton = document.getElementById('nine').addEventListener('click', (e) => {inputValue(9)});
 
 function inputValue(num) {
+    // Allow for new calculations after a previous calculation when not selecting
+    // an operator
     if(isEqualStateActive === false) {
-        currentInputArray.push(num);
-        runningInputArray.push(currentInputArray.join(''));
-        equationArray = runningInputArray;
-        displayArray = runningInputArray.join('').toString();
-        resultDisplay.textContent = displayArray;
-        clear.textContent = 'C';
-        currentInputArray = [];
-        //runningInputArray = [];
-        resetACCounter();
+        console.log(isEqualStateActive);
+        memoryArray = [];
     }
-    // Clears the display when a new number is inputted after selecting an equation
-    // sign
-    else if(isEqualStateActive === true) {
-        currentInputArray.push(num);
-        runningInputArray.push(currentInputArray.join(''));
-        equationArray = runningInputArray;
-        displayArray = runningInputArray.join('').toString();
-        resultDisplay.textContent = displayArray;
-        clear.textContent = 'C';
-        currentInputArray = [];
-        resetACCounter();
-    }
+    currentInputArray.push(num);
+    displayArray.push(currentInputArray);
+    console.log(displayArray);
+    //currentInputArray = [];
+    // resultDisplay.textContent = displayArray.join('').toString();
+    resultDisplay.textContent = Number(currentInputArray.join(''));
+    clear.textContent = 'C';
+    resetACCounter();
 }
 
-function calculateResult(equalState) {
-    if(equalState === 'addition') {
-        for(let i = 0; i < equationArray.length; i++) {
-            result += equationArray[i];
+function calculateResult() {
+    memoryArray.push(Number(currentInputArray.join('')));
+    currentInputArray = [];
+    console.log(memoryArray);
+    if(memoryArray.length > 1) {
+        if(equalState === 'addition') {
+            for(let i = 0; i < memoryArray.length; i++) {
+                result = memoryArray.reduce((a, b) => a + b, 0);
+            }
+            resultDisplay.textContent = result;
         }
-        resultDisplay.textContent = result.toString();
-        console.log(result);
-    }
-    else if(equalState === 'subtraction') {
-
-    }
-    else if(equalState === 'multiplication') {
-
-    }
-    else if(equalState === 'division') {
-
-    }
+        else if(equalState === 'subtraction') {
+    
+        }
+        else if(equalState === 'multiplication') {
+    
+        }
+        else if(equalState === 'division') {
+    
+        }
+    } else return;
+    isEqualStateActive = false;
+    console.log(isEqualStateActive);
 }
 
 function add() {
     // highlight + button
     setEqualState('addition');
-    //Unhighlight + button
+    // Unhighlight + button
 }
 
 function subtract() {
     // highlight + button
     setEqualState('subtraction');
-    //Unhighlight + button
+    // Unhighlight + button
 }
 
 function multiply() {
     // highlight + button
     setEqualState('multiplication');
-    //Unhighlight + button
+    // Unhighlight + button
 }
 
 function divide() {
     // highlight + button
     setEqualState('division');
-    //Unhighlight + button
+    // Unhighlight + button
 }
 
+// Prepares for an equation following an operator and passes first number into
+// memory
 function setEqualState(state) {
     equalState = state;
     isEqualStateActive = true;
-    runningInputArray = [];
+    console.log(isEqualStateActive);
+    memoryArray.push(Number(currentInputArray.join('')));
+    currentInputArray = [];
 }
 
 function clearResult() {
+    // optional part of the function that currently does nothing
     if(acCounter === 1) {
-        result = [];
-        equationArray = [];
+        currentInputArray = []
+        memoryArray = []
+        result = 0;
         resultDisplay.textContent = '0';
         resetACCounter();
 
     } else if(acCounter === 0) {
         currentInputArray = [];
-        equationArray = [];
+        displayArray = [];
+        
         resultDisplay.textContent = '0';
         clear.textContent = 'AC';
         if(currentInputArray !== 0){

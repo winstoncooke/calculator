@@ -1,28 +1,64 @@
-.calculator {
-    display: -webkit-box;
-    display: -moz-box;
-    display: -ms-flexbox;
-    display: -webkit-flex;
-    direction: flex;
-    -webkit-flex-direction: column;
-    -moz-flex-direction: column;
-    flex: auto;
-    flex-direction: column;
-    flex-wrap: wrap;
-    justify-content: center;
-    align-items: stretch;
-    width: 12rem;
-    border: 1px black solid;
-    
+.body {
+    margin: 0 auto;    
 }
 
-.result-pane {
+.header {
     display: flex;
-    justify-content: right;
-    align-items: center;
-    margin-right: 1rem;
+    justify-content: center;
 }
 
-.buttons {
-    position: relative;
+.calculator {
+    display: flex;
+    flex-direction: column;
+    align-content: center;
+    justify-content: center;
+    margin: 0 auto;
+    width: 9%;
+    height: 320px;
+    min-width: fit-content;
+    min-height: fit-content;
+    border: 1px black solid;
+    border-radius: 11px;
+    background-color: #555555;
+}
+
+.result-flex {
+    display: flex;
+    align-content: flex-end;
+    justify-content: right;
+    margin-right: 1em;
+    margin-bottom: 0;;
+    color: white;
+    font-size: 24px;
+}
+
+.btn-container {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.btn {
+    flex: 1 0 50px;
+    font-size: 22px;
+    border: 1px #505050 solid;
+    background-color: gray;
+    color: white;
+}
+
+#zero {
+    flex: 1 0 107px;
+}
+
+#clear,
+#positive-negative,
+#percent {
+    background-color: #707070;
+}
+
+#divide,
+#multiply,
+#subtract,
+#add,
+#equal {
+    background-color: orange;
 }

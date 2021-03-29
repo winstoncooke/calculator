@@ -1,43 +1,45 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Calculator</title>
-  <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculator</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <header class="header">
-    <h1 class="title">Calculator</h1>
-  </header>
-  <main class="main">
-    <div class="calculator">
-        <div class="result-pane">
-            <h2 class="result" id="result">0</h2>
+    <main class="main">
+        <header class="header">
+            <h1 class="title">Calculator</h1>
+        </header>
+        <div class="calculator">
+            <div class="result-flex">
+                <div class="result-pane">
+                    <h2 class="result" id="result">0</h2>
+                </div>
+            </div>
+            <div class="btn-container">
+                <button class="btn" id="clear" type="reset">AC</button>
+                <button class="btn" id="positive-negative" type="button">+/-</button>
+                <button class="btn" id="percent" type="button">%</button>
+                <button class="btn" id="divide" type="button">÷</button>
+                <button class="btn" id="seven" type="button">7</button>
+                <button class="btn" id="eight" type="button">8</button>
+                <button class="btn" id="nine" type="button">9</button>
+                <button class="btn" id="multiply" type="button">X</button>
+                <button class="btn" id="four" type="button">4</button>
+                <button class="btn" id="five" type="button">5</button>
+                <button class="btn" id="six" type="button">6</button>
+                <button class="btn" id="subtract" type="button">-</button>
+                <button class="btn" id="one" type="button">1</button>
+                <button class="btn" id="two" type="button">2</button>
+                <button class="btn" id="three" type="button">3</button>
+                <button class="btn" id="add" type="button">+</button>
+                <button class="btn" id="zero" type="button">0</button>
+                <button class="btn" id="decimal" type="button">.</button>
+                <button class="btn" id="equal" type="submit">=</button>
+            </div>
         </div>
-        <div class="btn-container">
-            <button class="btn" id="clear" type="reset">AC</button>
-            <button class="btn" id="positive-negative" type="button">+/-</button>
-            <button class="btn" id="percent" type="button">%</button>
-            <button class="btn" id="divide" type="button">÷</button>
-            <button class="btn" id="7" type="button">7</button>
-            <button class="btn" id="8" type="button">8</button>
-            <button class="btn" id="9" type="button">9</button>
-            <button class="btn" id="multiply" type="button">X</button>
-            <button class="btn" id="4" type="button">4</button>
-            <button class="btn" id="5" type="button">5</button>
-            <button class="btn" id="6" type="button">6</button>
-            <button class="btn" id="subtract" type="button">-</button>
-            <button class="btn" id="1" type="button">1</button>
-            <button class="btn" id="2" type="button">2</button>
-            <button class="btn" id="3" type="button">3</button>
-            <button class="btn" id="add" type="button">+</button>
-            <button class="btn" id="0" type="button">0</button>
-            <button class="btn" id="decimal" type="button">.</button>
-            <button class="btn" id="equal" type="submit">=</button>
-        </div>
-    </div>
-  </main>
-  <script src="script.js" defer></script>
+    </main>
+    <script src="script.js" defer></script>
 </body>
 </html>
