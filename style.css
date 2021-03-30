@@ -1,5 +1,20 @@
-.body {
-    margin: 0 auto;    
+:root {
+    --background: #474B4D;
+    --border: #000;
+    --result: #ECEDED;
+    --btn-numbers: #EAEBEB;
+    --btn-numbers-background: #757779;
+    --btn-numbers-active: #A19F9F;
+    --btn-functions: #E6E6E7;
+    --btn-functions-background: #595D5E;
+    --btn-functions-active: #757779;
+    --btn-operators: #FFF1DF;
+    --btn-operators-background: #FF9F0C;
+    --btn-operators-active: #CA7B03;
+}
+
+html {
+    background-color:lightgray;
 }
 
 .header {
@@ -14,45 +29,58 @@
     justify-content: center;
     margin: 0 auto;
     width: 9%;
-    height: 320px;
     min-width: fit-content;
     min-height: fit-content;
-    border: 1px black solid;
-    border-radius: 11px;
-    background-color: #555555;
+    background-color: var(--background);
+    border: .1em var(--border) solid;
+    border-radius: .66em;
 }
 
 .result-flex {
     display: flex;
-    align-content: flex-end;
+    align-content: flex-start;
     justify-content: right;
+    height: .1em;
     margin-right: 1em;
-    margin-bottom: 0;;
-    color: white;
-    font-size: 24px;
+    margin-bottom: 1em;
+    color: var(--result);
+    font-family: 'Roboto', sans-serif;
+    font-size: 2em;
 }
 
 .btn-container {
     display: flex;
     flex-wrap: wrap;
+    margin-top: 4em;
 }
 
 .btn {
-    flex: 1 0 50px;
-    font-size: 22px;
-    border: 1px #505050 solid;
-    background-color: gray;
-    color: white;
+    width: 2.38em;
+    height: 2em;
+    border: .0005em var(--background) solid;
+    color: var(--btn-numbers);
+    background-color: var(--btn-numbers-background);
+    font-family: 'Roboto', sans-serif;
+    font-size: 1.5em;
+    margin: 0em;
 }
 
-#zero {
-    flex: 1 0 107px;
+.btn:active {
+    background-color: var(--btn-numbers-active);
 }
 
 #clear,
 #positive-negative,
 #percent {
-    background-color: #707070;
+    color: var(--btn-functions);
+    background-color: var(--btn-functions-background);
+    font-size: 1.5em;
+}
+
+#clear:active,
+#positive-negative:active,
+#percent:active {
+    background-color: var(--btn-functions-active);
 }
 
 #divide,
@@ -60,5 +88,24 @@
 #subtract,
 #add,
 #equal {
-    background-color: orange;
+    color: var(--btn-operators);
+    background-color: var(--btn-operators-background);
+    font-size: 1.5em;
+}
+
+#divide:active,
+#multiply:active,
+#subtract:active,
+#add:active,
+#equal:active {
+    background-color: var(--btn-operators-active);
+}
+
+#zero {
+    flex: 1 0 4.45em;
+    border-radius: 0 0 0 .375em;
+}
+
+#equal {
+    border-radius: 0 0 .375em 0;
 }

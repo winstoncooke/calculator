@@ -1,9 +1,9 @@
-let result = 0;
-let currentInputArray = [];
-let memoryArray = [];
+let result = null;
+let currentValue = 0;
+let memoryValue = 0;
 let displayArray = [];
 let acCounter = 0;
-let equalState = 'addition';
+let equalState = '';
 let isEqualStateActive = false;
 
 const resultDisplay = document.getElementById('result');
@@ -15,7 +15,7 @@ const division = document.getElementById('divide').addEventListener('click', div
 const multiplier = document.getElementById('multiply').addEventListener('click', multiply);
 const subtraction = document.getElementById('subtract').addEventListener('click', subtract);
 const addition = document.getElementById('add').addEventListener('click', add);
-const equal = document.getElementById('equal').addEventListener('click', calculateResult);
+const equal = document.getElementById('equal').addEventListener('click', operate);
 const decimal = document.getElementById('decimal').addEventListener('click', addDecimal);
 const zeroButton = document.getElementById('zero').addEventListener('click', (e) => {inputValue(0)});
 const oneButton = document.getElementById('one').addEventListener('click', (e) => {inputValue(1)});
@@ -28,101 +28,110 @@ const sevenButton = document.getElementById('seven').addEventListener('click', (
 const eightButton = document.getElementById('eight').addEventListener('click', (e) => {inputValue(8)});
 const nineButton = document.getElementById('nine').addEventListener('click', (e) => {inputValue(9)});
 
+console.log(displayArray.length);
+
 function inputValue(num) {
     // Allow for new calculations after a previous calculation when not selecting
     // an operator
-    if(isEqualStateActive === false) {
-        console.log(isEqualStateActive);
-        memoryArray = [];
-    }
-    currentInputArray.push(num);
-    displayArray.push(currentInputArray);
-    console.log(displayArray);
-    //currentInputArray = [];
-    // resultDisplay.textContent = displayArray.join('').toString();
-    resultDisplay.textContent = Number(currentInputArray.join(''));
-    clear.textContent = 'C';
-    resetACCounter();
+    currentValue = num;
+    console.log(`cur: ${currentValue}`);
+    updateDisplay(currentValue);
 }
 
-function calculateResult() {
-    memoryArray.push(Number(currentInputArray.join('')));
-    currentInputArray = [];
-    console.log(memoryArray);
-    if(memoryArray.length > 1) {
-        if(equalState === 'addition') {
-            for(let i = 0; i < memoryArray.length; i++) {
-                result = memoryArray.reduce((a, b) => a + b, 0);
-            }
-            resultDisplay.textContent = result;
-        }
-        else if(equalState === 'subtraction') {
+function updateDisplay(value) {
+    // if(value === '.') {
+    //     value = '0.';
+    // }
     
-        }
-        else if(equalState === 'multiplication') {
-    
-        }
-        else if(equalState === 'division') {
-    
-        }
-    } else return;
+    if(displayArray.length !== 0 || Math.abs(value) > 0) {
+        displayArray.push(value);
+        resultDisplay.textContent = displayArray.join('');
+        clear.textContent = 'C';
+    }
+}
+
+function operate() {
+    currentValue = Number(displayArray.join(''));
+        
+    if(equalState === 'addition') {
+        result = memoryValue + currentValue;
+        connectResultToUpdateDisplay(result);
+    }
+    else if(equalState === 'subtraction') {           
+        result = memoryValue.splice((a, b) => a + b, 0);
+        connectResultToUpdateDisplay(result);
+    }
+    else if(equalState === 'multiplication') {
+        result = memoryValue.reduce((a, b) => a * b, 0);
+        connectResultToUpdateDisplay(result);
+    }
+    else if(equalState === 'division') {
+        result = memoryValue.reduce((a, b) => a / b, 0);
+        connectResultToUpdateDisplay(result);
+    }
+    console.log(`mem: ${memoryValue}`);
+    console.log(`res ${result}`)
+}
+
+function connectResultToUpdateDisplay(result) {
+    memoryValue = result;
+    displayArray = [];
+    updateDisplay(result);
+    displayArray = [];
+    currentValue = null;
+    equalState = '';
     isEqualStateActive = false;
-    console.log(isEqualStateActive);
 }
 
 function add() {
     // highlight + button
-    setEqualState('addition');
+    operator('addition');
     // Unhighlight + button
 }
 
 function subtract() {
     // highlight + button
-    setEqualState('subtraction');
+    operator('subtraction');
     // Unhighlight + button
 }
 
 function multiply() {
     // highlight + button
-    setEqualState('multiplication');
+    operator('multiplication');
     // Unhighlight + button
 }
 
 function divide() {
     // highlight + button
-    setEqualState('division');
+    operator('division');
     // Unhighlight + button
 }
 
 // Prepares for an equation following an operator and passes first number into
-// memory
-function setEqualState(state) {
+// memoryValue
+function operator(state) {
+    if(currentValue !== null) {
+        console.log(currentValue);
+        memoryValue = Number(displayArray.join(''));
+    }
+    else {
+        memoryValue = result;
+    }
+    currentValue = [];
+    displayArray = [];
     equalState = state;
     isEqualStateActive = true;
-    console.log(isEqualStateActive);
-    memoryArray.push(Number(currentInputArray.join('')));
-    currentInputArray = [];
 }
 
 function clearResult() {
-    // optional part of the function that currently does nothing
-    if(acCounter === 1) {
-        currentInputArray = []
-        memoryArray = []
-        result = 0;
-        resultDisplay.textContent = '0';
-        resetACCounter();
-
-    } else if(acCounter === 0) {
-        currentInputArray = [];
-        displayArray = [];
-        
-        resultDisplay.textContent = '0';
-        clear.textContent = 'AC';
-        if(currentInputArray !== 0){
-            acCounter++;
-        }
-    }
+    resultDisplay.textContent = 0;
+    result = null;
+    currentValue = 0;
+    memoryValue = 0;
+    displayArray = [];
+    clear.textContent = 'AC';
+    equalState = '';
+    isEqualStateActive = false;
 }
 
 function resetACCounter() {
@@ -130,7 +139,9 @@ function resetACCounter() {
 }
 
 function negateValue() {
-    return;
+    currentValue *= -1;
+    displayArray = [];
+    updateDisplay(currentValue);
 }
 
 function returnPercent() {
