@@ -5,6 +5,7 @@ let displayArray = [];
 let acCounter = 0;
 let equalState = '';
 let isEqualStateActive = false;
+let equalCounter = 0;
 
 const resultDisplay = document.getElementById('result');
 const clear = document.getElementById('clear');
@@ -15,7 +16,7 @@ const division = document.getElementById('divide').addEventListener('click', div
 const multiplier = document.getElementById('multiply').addEventListener('click', multiply);
 const subtraction = document.getElementById('subtract').addEventListener('click', subtract);
 const addition = document.getElementById('add').addEventListener('click', add);
-const equal = document.getElementById('equal').addEventListener('click', operate);
+const equal = document.getElementById('equal').addEventListener('click', operator);
 const decimal = document.getElementById('decimal').addEventListener('click', addDecimal);
 const zeroButton = document.getElementById('zero').addEventListener('click', (e) => {inputValue(0)});
 const oneButton = document.getElementById('one').addEventListener('click', (e) => {inputValue(1)});
@@ -28,50 +29,56 @@ const sevenButton = document.getElementById('seven').addEventListener('click', (
 const eightButton = document.getElementById('eight').addEventListener('click', (e) => {inputValue(8)});
 const nineButton = document.getElementById('nine').addEventListener('click', (e) => {inputValue(9)});
 
-console.log(displayArray.length);
-
 function inputValue(num) {
     // Allow for new calculations after a previous calculation when not selecting
-    // an operator
+    // an storeValue
     currentValue = num;
-    console.log(`cur: ${currentValue}`);
     updateDisplay(currentValue);
 }
 
-function updateDisplay(value) {
-    // if(value === '.') {
+function updateDisplay(value) {   
+    // if(displayArray === [] && value === '.' && isEqualStateActive === false) {
     //     value = '0.';
     // }
-    
-    if(displayArray.length !== 0 || Math.abs(value) > 0) {
+    if(displayArray.length === 0 && value === 0) {
+        Number(value);
+    }
+
+    if((displayArray.length !== 0 || Math.abs(value) > 0) && displayArray.length <
+    5) {
         displayArray.push(value);
         resultDisplay.textContent = displayArray.join('');
         clear.textContent = 'C';
     }
 }
 
-function operate() {
+function operator() {
     currentValue = Number(displayArray.join(''));
-        
     if(equalState === 'addition') {
-        result = memoryValue + currentValue;
+        result = round((memoryValue + currentValue), 3);
         connectResultToUpdateDisplay(result);
     }
     else if(equalState === 'subtraction') {           
-        result = memoryValue.splice((a, b) => a + b, 0);
+        result = round((memoryValue - currentValue), 3);
         connectResultToUpdateDisplay(result);
     }
     else if(equalState === 'multiplication') {
-        result = memoryValue.reduce((a, b) => a * b, 0);
+        result = round((memoryValue * currentValue), 3);
         connectResultToUpdateDisplay(result);
     }
     else if(equalState === 'division') {
-        result = memoryValue.reduce((a, b) => a / b, 0);
-        connectResultToUpdateDisplay(result);
+        if(currentValue === 0) {
+            resultDisplay.textContent = 'Not a number';
+        } else {
+            result = round((memoryValue / currentValue), 3);
+            connectResultToUpdateDisplay(result);
+        }
     }
-    console.log(`mem: ${memoryValue}`);
-    console.log(`res ${result}`)
 }
+
+function round(value, decimals) {
+    return Number(Math.round(value+'e'+decimals)+'e-'+decimals);
+  }
 
 function connectResultToUpdateDisplay(result) {
     memoryValue = result;
@@ -81,37 +88,45 @@ function connectResultToUpdateDisplay(result) {
     currentValue = null;
     equalState = '';
     isEqualStateActive = false;
+    equalCounter--;
 }
 
 function add() {
     // highlight + button
-    operator('addition');
+    checkToOperate('addition');
     // Unhighlight + button
 }
 
 function subtract() {
     // highlight + button
-    operator('subtraction');
+    checkToOperate('subtraction');
     // Unhighlight + button
 }
 
 function multiply() {
     // highlight + button
-    operator('multiplication');
+    checkToOperate('multiplication');
     // Unhighlight + button
 }
 
 function divide() {
     // highlight + button
-    operator('division');
+    checkToOperate('division');
     // Unhighlight + button
 }
 
-// Prepares for an equation following an operator and passes first number into
+// Enables operator button to serve the same function as the equal sign
+function checkToOperate(state) {
+    if(equalCounter === 1) {
+        operator();
+    }
+    storeValue(state);
+}
+
+// Prepares for an equation following an storeValue and passes first number into
 // memoryValue
-function operator(state) {
+function storeValue(state) {
     if(currentValue !== null) {
-        console.log(currentValue);
         memoryValue = Number(displayArray.join(''));
     }
     else {
@@ -121,6 +136,7 @@ function operator(state) {
     displayArray = [];
     equalState = state;
     isEqualStateActive = true;
+    equalCounter++;
 }
 
 function clearResult() {
@@ -132,6 +148,7 @@ function clearResult() {
     clear.textContent = 'AC';
     equalState = '';
     isEqualStateActive = false;
+    equalCounter = 0;
 }
 
 function resetACCounter() {

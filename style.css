@@ -34,6 +34,8 @@ html {
     background-color: var(--background);
     border: .1em var(--border) solid;
     border-radius: .66em;
+    overflow: hidden;
+    
 }
 
 .result-flex {
@@ -45,7 +47,15 @@ html {
     margin-bottom: 1em;
     color: var(--result);
     font-family: 'Roboto', sans-serif;
-    font-size: 2em;
+    font-size: .8vw;
+    white-space: -moz-pre-wrap !important;
+    white-space: -pre-wrap;
+    white-space: -o-pre-wrap;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    white-space: -webkit-pre-wrap;
+    word-break: break-all;
+    white-space: normal;
 }
 
 .btn-container {
