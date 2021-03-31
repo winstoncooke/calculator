@@ -8,6 +8,7 @@ let isEqualStateActive = false;
 let equalCounter = 0;
 let percentValue;
 let negateValue;
+let decimalCount = 0;
 
 const resultDisplay = document.getElementById('result');
 const clear = document.getElementById('clear');
@@ -40,11 +41,25 @@ function inputValue(num) {
 }
 
 function updateDisplay(value) {   
-    if((displayArray.length !== 0 || Math.abs(value) > 0) && displayArray.length <
-    5) {
+    if(value === '.' && decimalCount === 0 && displayArray.length === 0){
+        displayArray.push('0.');
+        resultDisplay.textContent = displayArray.join('');
+        clear.textContent = 'C';
+        decimalCount++;
+    }
+    else if(value === '.' && decimalCount === 0) {
         displayArray.push(value);
         resultDisplay.textContent = displayArray.join('');
         clear.textContent = 'C';
+        decimalCount++;
+    }
+    
+    else if((displayArray.length !== 0 || Math.abs(value) > 0) && displayArray.length <
+        5 && value !== '.') {
+        displayArray.push(value);
+        resultDisplay.textContent = displayArray.join('');
+        clear.textContent = 'C';
+
     }
 }
 
@@ -85,6 +100,7 @@ function connectResultToUpdateDisplay(result) {
     equalState = '';
     isEqualStateActive = false;
     equalCounter--;
+    decimalCount = 0;
 }
 
 function add() {
@@ -133,6 +149,7 @@ function storeValue(state) {
     equalState = state;
     isEqualStateActive = true;
     equalCounter++;
+    decimalCount = 0;
 }
 
 function clearResult() {
@@ -144,6 +161,7 @@ function clearResult() {
     equalState = '';
     isEqualStateActive = false;
     equalCounter = 0;
+    decimalCount = 0;
     resultDisplay.textContent = 0;
     clear.textContent = 'AC';
 
@@ -178,5 +196,3 @@ function returnPercent() {
     displayArray = [];
     inputValue(percentValue);
 }
-
-// Fix decimals in next build
