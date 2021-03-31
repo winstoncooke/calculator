@@ -6,18 +6,21 @@ let acCounter = 0;
 let equalState = '';
 let isEqualStateActive = false;
 let equalCounter = 0;
+let percentValue;
+let negateValue;
 
 const resultDisplay = document.getElementById('result');
 const clear = document.getElementById('clear');
 clear.addEventListener('click', clearResult);
-const positiveNegative = document.getElementById('positive-negative').addEventListener('click', negateValue);
+const calcKeys = document.querySelector('.btn-container');
+const positiveNegative = document.getElementById('positive-negative').addEventListener('click', returnNegateValue);
 const percent = document.getElementById('percent').addEventListener('click', returnPercent);
 const division = document.getElementById('divide').addEventListener('click', divide);
 const multiplier = document.getElementById('multiply').addEventListener('click', multiply);
 const subtraction = document.getElementById('subtract').addEventListener('click', subtract);
 const addition = document.getElementById('add').addEventListener('click', add);
 const equal = document.getElementById('equal').addEventListener('click', operator);
-const decimal = document.getElementById('decimal').addEventListener('click', addDecimal);
+const decimal = document.getElementById('decimal').addEventListener('click',  (e) => {inputValue('.')});
 const zeroButton = document.getElementById('zero').addEventListener('click', (e) => {inputValue(0)});
 const oneButton = document.getElementById('one').addEventListener('click', (e) => {inputValue(1)});
 const twoButton = document.getElementById('two').addEventListener('click', (e) => {inputValue(2)});
@@ -37,13 +40,6 @@ function inputValue(num) {
 }
 
 function updateDisplay(value) {   
-    // if(displayArray === [] && value === '.' && isEqualStateActive === false) {
-    //     value = '0.';
-    // }
-    if(displayArray.length === 0 && value === 0) {
-        Number(value);
-    }
-
     if((displayArray.length !== 0 || Math.abs(value) > 0) && displayArray.length <
     5) {
         displayArray.push(value);
@@ -132,7 +128,7 @@ function storeValue(state) {
     else {
         memoryValue = result;
     }
-    currentValue = [];
+    currentValue = 0;
     displayArray = [];
     equalState = state;
     isEqualStateActive = true;
@@ -140,31 +136,47 @@ function storeValue(state) {
 }
 
 function clearResult() {
-    resultDisplay.textContent = 0;
     result = null;
     currentValue = 0;
     memoryValue = 0;
     displayArray = [];
-    clear.textContent = 'AC';
+    acCounter = 0;
     equalState = '';
     isEqualStateActive = false;
     equalCounter = 0;
+    resultDisplay.textContent = 0;
+    clear.textContent = 'AC';
+
 }
 
 function resetACCounter() {
     acCounter = 0;
 }
 
-function negateValue() {
-    currentValue *= -1;
+function returnNegateValue() {
+    if(currentValue === null) {
+        memoryValue *= -1;
+        negateValue = memoryValue;
+    }
+    else {
+        negateValue = displayArray.join('');
+        negateValue *= -1;
+    }
     displayArray = [];
-    updateDisplay(currentValue);
+    inputValue(negateValue);
 }
 
 function returnPercent() {
-    return;
+    if(currentValue === null) {
+        memoryValue *= .01;
+        percentValue = memoryValue;
+    }
+    else {
+        percentValue = displayArray.join('');
+        percentValue *= .01;
+    }
+    displayArray = [];
+    inputValue(percentValue);
 }
 
-function addDecimal() {
-    inputValue('.');
-}
+// Fix decimals in next build
