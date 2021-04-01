@@ -28,17 +28,12 @@
 
 html {
     background-color:var(--background);
+    font-family: 'Roboto', sans-serif;
 }
 
-.main {
+main {
     padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
-}
-
-.header {
-    text-align: center;
-    width: 100%;
-    height: 80px;
-    margin: 0 auto;
+    margin-top: 1em;
 }
 
 .calculator {
@@ -56,12 +51,13 @@ html {
 }
 
 .result-container {
+    display: flex;
+    align-items: flex-end;
+    justify-content: flex-end;
     width: 100%;
     height: 25%;
-    text-align: right;
     color: var(--result);
-    font-family: 'Roboto', sans-serif;
-    font-size: 2em;
+    font-size: 3em;
 }
 
 .result {
@@ -85,7 +81,6 @@ html {
     border: 1px var(--calculator-background) solid;
     background-color: var(--btn-numbers-background);
     color: var(--btn-numbers);
-    font-family: 'Roboto', sans-serif;
     font-size: 1.5em;
     margin: 0;
 }
@@ -134,11 +129,42 @@ html {
 }
 
 @media only screen 
-    and (device-width: 375px) 
-    and (device-height: 812px) 
-    and (-webkit-device-pixel-ratio: 3) {
+    and (max-width: 450px)
+    and (max-height: 850px) {
+        main {
+            margin-top: 0;
+        }
+        
         .calculator {
+            position: relative;
+            left: 50%;
+            right: 50%;
+            margin-left: -50vw;
+            margin-right: -50vw;
+            max-width: 100%;
             width: 100%;
-            height: 100%;
+            height: 100vh;
+            border-radius: 0;
+        }
+
+        .result-container {
+            flex: 1;
+            font-size: 3.5em;
+        }
+
+        .btn-container {
+            flex: 1;
+        }
+
+        .btn {
+            font-size: 2em;
+        }
+
+        #zero {
+            border-radius: 0;
+        }
+
+        #equal {
+            border-radius: 0;
         }
     }
