@@ -61,8 +61,7 @@ main {
 }
 
 .result {
-    margin-top: .5em;
-    margin-right: .25em;
+    margin-right: .3em;
 }
 
 .btn-container {
@@ -148,8 +147,12 @@ main {
         }
 
         .result-container {
-            flex: 1;
-            font-size: 3.5em;
+            height: 30%;
+            font-size: 5em;
+        }
+
+        .result {
+            margin-right: .4em;
         }
 
         .btn-container {
