@@ -9,6 +9,7 @@ let equalCounter = 0;
 let percentValue;
 let negateValue;
 let decimalCount = 0;
+let map = {};
 
 const resultDisplay = document.getElementById('result');
 const clear = document.getElementById('clear');
@@ -33,6 +34,88 @@ const sevenButton = document.getElementById('seven').addEventListener('click', (
 const eightButton = document.getElementById('eight').addEventListener('click', (e) => {inputValue(8)});
 const nineButton = document.getElementById('nine').addEventListener('click', (e) => {inputValue(9)});
 
+onkeydown = onkeyup = function(e) {
+    map[e.key] = e.type == 'keydown';
+}
+
+window.addEventListener('keydown', function(e) {
+    if(e.defaultPrevented) {
+        return;
+    }
+
+    switch(e.key) {
+        case 'Escape':
+            clearResult();
+            break;
+        case 'Backspace':
+            deleteNumber(); //Add function
+            break;
+        // add option & minus keys together
+        case ('Option' || 'Alt'):
+            returnNegateValue();
+            break;
+        case '%':
+            returnPercent();
+            break;
+        case '/':
+            divide();
+            break;
+        case '*':
+            multiply();
+            break;
+        case '-':
+            subtract();
+            break;
+        case '+':
+            add();
+            break;
+        case '=':
+            operator();
+            break;
+        case 'Enter':
+            operator();
+            break;
+        case '1':
+            inputValue(1);
+            break;
+        case '2':
+            inputValue(2);
+            break;
+        case '3':
+            inputValue(3);
+            break;
+        case '4':
+            inputValue(4);
+            break;
+        case '5':
+            inputValue(5);
+            break;
+        case '6':
+            inputValue(6);
+            break;
+        case '7':
+            inputValue(7);
+            break;
+        case '8':
+            inputValue(8);
+            break;
+        case '9':
+            inputValue(9);
+            break;
+        case '0':
+            inputValue(0);
+            break;
+        case '.':
+            inputValue('.');
+            break;
+        case 'p':
+            inputValue(3.141592653589793)
+        default:
+            return;
+    }
+    e.preventDefault();
+}, true);
+
 function inputValue(num) {
     // Allow for new calculations after a previous calculation when not selecting
     // an storeValue
@@ -54,34 +137,42 @@ function updateDisplay(value) {
         decimalCount++;
     }
     
-    else if((displayArray.length !== 0 || Math.abs(value) > 0) && displayArray.length <
-        5 && value !== '.') {
+    else if((displayArray.length !== 0 || Math.abs(value) > 0) 
+        && displayArray.length < 38 && value !== '.') {
         displayArray.push(value);
         resultDisplay.textContent = displayArray.join('');
         clear.textContent = 'C';
-
+    }
+    else if((displayArray.length !== 0 || Math.abs(value) > 0) 
+        && displayArray.length >= 38 && value !== '.') {
+        displayArray.push(0);
+        resultDisplay.textContent = displayArray.join('');
+        clear.textContent = 'C';
     }
 }
 
 function operator() {
-    currentValue = Number(displayArray.join(''));
+    if(currentValue !== null) {
+        currentValue = Number(displayArray.join(''));    
+    } else return;
+    
     if(equalState === 'addition') {
-        result = round((memoryValue + currentValue), 3);
+        result = round((memoryValue + currentValue), 4);
         connectResultToUpdateDisplay(result);
     }
     else if(equalState === 'subtraction') {           
-        result = round((memoryValue - currentValue), 3);
+        result = round((memoryValue - currentValue), 4);
         connectResultToUpdateDisplay(result);
     }
     else if(equalState === 'multiplication') {
-        result = round((memoryValue * currentValue), 3);
+        result = round((memoryValue * currentValue), 4);
         connectResultToUpdateDisplay(result);
     }
     else if(equalState === 'division') {
         if(currentValue === 0) {
             resultDisplay.textContent = 'Not a number';
         } else {
-            result = round((memoryValue / currentValue), 3);
+            result = round((memoryValue / currentValue), 4);
             connectResultToUpdateDisplay(result);
         }
     }
@@ -164,7 +255,20 @@ function clearResult() {
     decimalCount = 0;
     resultDisplay.textContent = 0;
     clear.textContent = 'AC';
+}
 
+function deleteNumber() {
+    if(displayArray.length > 0) {
+        displayArray.pop();
+        resultDisplay.textContent = displayArray.join('');
+        if(displayArray.length === 0){
+            resultDisplay.textContent = 0;
+        }
+    }
+    else if(displayArray.length === 0 && memoryValue === 0) {
+        resultDisplay.textContent = 0;
+    }
+    else resultDisplay.textContent = memoryValue;
 }
 
 function resetACCounter() {
