@@ -1,16 +1,4 @@
-let result = null;
-let currentValue = 0;
-let memoryValue = 0;
-let displayArray = [];
-let acCounter = 0;
-let equalState = '';
-let isEqualStateActive = false;
-let equalCounter = 0;
-let percentValue;
-let negateValue;
-let decimalCount = 0;
-let map = {};
-
+const root = document.querySelector(':root');
 const resultDisplay = document.getElementById('result');
 const clear = document.getElementById('clear');
 clear.addEventListener('click', clearResult);
@@ -34,9 +22,19 @@ const sevenButton = document.getElementById('seven').addEventListener('click', (
 const eightButton = document.getElementById('eight').addEventListener('click', (e) => {inputValue(8)});
 const nineButton = document.getElementById('nine').addEventListener('click', (e) => {inputValue(9)});
 
-onkeydown = onkeyup = function(e) {
-    map[e.key] = e.type == 'keydown';
-}
+let result = null;
+let currentValue = 0;
+let memoryValue = 0;
+let displayArray = [];
+let acCounter = 0;
+let equalState = '';
+let isEqualStateActive = false;
+let equalCounter = 0;
+let percentValue;
+let negateValue;
+let decimalCount = 0;
+let lengthCounter = 0;
+let map = {};
 
 window.addEventListener('keydown', function(e) {
     if(e.defaultPrevented) {
@@ -119,12 +117,16 @@ window.addEventListener('keydown', function(e) {
 function inputValue(num) {
     // Allow for new calculations after a previous calculation when not selecting
     // an storeValue
+    if(lengthCounter === 0) {
+        resultDisplay.style.fontSize = ('3em');
+    }
     currentValue = num;
+    lengthCounter++;
     updateDisplay(currentValue);
 }
 
 function updateDisplay(value) {   
-    if(value === '.' && decimalCount === 0 && displayArray.length === 0){
+    if(value === '.' && decimalCount === 0 && lengthCounter === 0){
         displayArray.push('0.');
         resultDisplay.textContent = displayArray.join('');
         clear.textContent = 'C';
@@ -137,17 +139,48 @@ function updateDisplay(value) {
         decimalCount++;
     }
     
-    else if((displayArray.length !== 0 || Math.abs(value) > 0) 
-        && displayArray.length < 38 && value !== '.') {
+    else if((lengthCounter !== 0 || Math.abs(value) > 0) 
+        && lengthCounter < 18 && value !== '.') {
         displayArray.push(value);
         resultDisplay.textContent = displayArray.join('');
         clear.textContent = 'C';
     }
-    else if((displayArray.length !== 0 || Math.abs(value) > 0) 
-        && displayArray.length >= 38 && value !== '.') {
+    else if((lengthCounter !== 0 || Math.abs(value) > 0) 
+        && lengthCounter >= 38 && value !== '.') {
         displayArray.push(0);
         resultDisplay.textContent = displayArray.join('');
         clear.textContent = 'C';
+    }
+    increaseFontSize();
+}
+
+function increaseFontSize() {   
+    if(lengthCounter > 16) {
+        resultDisplay.style.fontSize = ('1em');
+    }
+    else if(lengthCounter > 12) {
+        resultDisplay.style.fontSize = ('1.5em');
+    }
+    else if(lengthCounter > 9) {
+        resultDisplay.style.fontSize = ('2em');
+    }
+    else if(lengthCounter > 7 || percentValue > 11111.) {
+        resultDisplay.style.fontSize = ('2.5em');
+    }
+}
+
+function reduceFontSize() {
+    if(lengthCounter <= 7) {
+        resultDisplay.style.fontSize = ('3em');
+    }
+    else if(lengthCounter <= 9) {
+        resultDisplay.style.fontSize = ('2.5em');
+    }
+    else if(lengthCounter <= 12) {
+        resultDisplay.style.fontSize = ('2em');
+    }
+    else if(lengthCounter <= 16) {
+        resultDisplay.style.fontSize = ('1.5em');
     }
 }
 
@@ -192,6 +225,7 @@ function connectResultToUpdateDisplay(result) {
     isEqualStateActive = false;
     equalCounter--;
     decimalCount = 0;
+    lengthCounter = 0;
 }
 
 function add() {
@@ -241,6 +275,7 @@ function storeValue(state) {
     isEqualStateActive = true;
     equalCounter++;
     decimalCount = 0;
+    lengthCounter = 0;
 }
 
 function clearResult() {
@@ -253,22 +288,26 @@ function clearResult() {
     isEqualStateActive = false;
     equalCounter = 0;
     decimalCount = 0;
+    lengthCounter = 0;
     resultDisplay.textContent = 0;
+    resultDisplay.style.fontSize = ('3em');
     clear.textContent = 'AC';
 }
 
 function deleteNumber() {
-    if(displayArray.length > 0) {
+    if(lengthCounter > 1) {
         displayArray.pop();
         resultDisplay.textContent = displayArray.join('');
-        if(displayArray.length === 0){
-            resultDisplay.textContent = 0;
-        }
     }
-    else if(displayArray.length === 0 && memoryValue === 0) {
+    else {
         resultDisplay.textContent = 0;
+        displayArray = [];
     }
-    else resultDisplay.textContent = memoryValue;
+    
+    if(lengthCounter > 0) {
+        lengthCounter--;
+    }
+    reduceFontSize();
 }
 
 function resetACCounter() {
@@ -276,27 +315,32 @@ function resetACCounter() {
 }
 
 function returnNegateValue() {
-    if(currentValue === null) {
-        memoryValue *= -1;
-        negateValue = memoryValue;
+    if(Math.abs(currentValue) > 0) {
+        if(currentValue === null) {
+            memoryValue *= -1;
+            negateValue = memoryValue;
+        }
+        else {
+            negateValue = displayArray.join('');
+            negateValue *= -1;
+        }
+        lengthCounter++;
+        displayArray = [];
+        inputValue(negateValue);
     }
-    else {
-        negateValue = displayArray.join('');
-        negateValue *= -1;
-    }
-    displayArray = [];
-    inputValue(negateValue);
 }
 
 function returnPercent() {
     if(currentValue === null) {
-        memoryValue *= .01;
+        memoryValue = round(memoryValue * .01, 4);
         percentValue = memoryValue;
     }
-    else {
+    else if (Math.abs(currentValue > 0)) {
         percentValue = displayArray.join('');
-        percentValue *= .01;
+        percentValue = round(percentValue * .01, 4);
+        memoryValue = percentValue;
     }
+    else return;
     displayArray = [];
     inputValue(percentValue);
 }
