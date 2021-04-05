@@ -1,4 +1,5 @@
 :root {
+    touch-action: none;
     background-color:var(--background);
     font-family: 'Roboto', sans-serif;
     

@@ -104,10 +104,11 @@ window.addEventListener('keydown', function(e) {
             inputValue(0);
             break;
         case '.':
-            inputValue('.');
+            appendPoint();
             break;
         case 'p':
-            inputValue(3.141592653589793)
+            inputValue(3.141592653589793);
+            break;
         default:
             return;
     }
@@ -116,7 +117,7 @@ window.addEventListener('keydown', function(e) {
 
 function inputValue(num) {
     // Allow for new calculations after a previous calculation when not selecting
-    // an storeValue
+    // an storeValue    
     if(lengthCounter === 0) {
         resultDisplay.style.fontSize = ('3em');
     }
@@ -126,26 +127,13 @@ function inputValue(num) {
 }
 
 function updateDisplay(value) {   
-    if(value === '.' && decimalCount === 0 && lengthCounter === 0){
-        displayArray.push('0.');
-        resultDisplay.textContent = displayArray.join('');
-        clear.textContent = 'C';
-        decimalCount++;
-    }
-    else if(value === '.' && decimalCount === 0) {
-        displayArray.push(value);
-        resultDisplay.textContent = displayArray.join('');
-        clear.textContent = 'C';
-        decimalCount++;
-    }
-    
-    else if((lengthCounter !== 0 || Math.abs(value) > 0) 
+    if((displayArray.length !== 0 || Math.abs(value) > 0) 
         && lengthCounter < 18 && value !== '.') {
         displayArray.push(value);
         resultDisplay.textContent = displayArray.join('');
         clear.textContent = 'C';
     }
-    else if((lengthCounter !== 0 || Math.abs(value) > 0) 
+    else if((displayArray.length !== 0 || Math.abs(value) > 0) 
         && lengthCounter >= 38 && value !== '.') {
         displayArray.push(0);
         resultDisplay.textContent = displayArray.join('');
@@ -153,6 +141,15 @@ function updateDisplay(value) {
     }
     increaseFontSize();
 }
+
+function appendPoint() {
+    if (resultDisplay.textContent === '') resultDisplay.textContent = '0';
+    if (resultDisplay.textContent.includes('.')) return;
+    displayArray.push('.');
+    resultDisplay.textContent = displayArray.join('');
+    // resultDisplay.textContent += '.';
+    clear.textContent = 'C';
+  }
 
 function increaseFontSize() {   
     if(lengthCounter > 16) {
