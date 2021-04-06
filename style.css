@@ -152,6 +152,7 @@ main {
 
         .result-container {
             font-size: 2em;
+            height: 20%;
         }
 
         .result {
