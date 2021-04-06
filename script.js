@@ -211,7 +211,7 @@ function resizeFontUp() {
 
 function operator() {
     if(currentValue !== null) {
-        currentValue = Number(resultDisplay.textContent);    
+        currentValue = Number(resultDisplay.textContent);
     } else return;
     
     if(equalState === 'addition') {
@@ -339,7 +339,7 @@ function resetACCounter() {
 }
 
 function returnNegateValue() {
-    if(Math.abs(currentValue) > 0) {
+    if(Math.abs(resultDisplay.textContent) > 0) {
         if(currentValue === null) {
             memoryValue *= -1;
             negateValue = memoryValue;
@@ -348,7 +348,11 @@ function returnNegateValue() {
             negateValue = resultDisplay.textContent;
             negateValue *= -1;
         }
-        lengthCounter++;
+        
+        if(negateValue < 1) {
+            lengthCounter++;
+        } else lengthCounter--;
+        
         isEqualStateActive = true;
         inputValue(negateValue);
     }
@@ -356,11 +360,11 @@ function returnNegateValue() {
 
 function returnPercent() {
     if(currentValue === null) {
-        memoryValue = round(memoryValue * .01, 4);
-        percentValue = memoryValue;
+        percentValue = round(memoryValue * .01, 4);
+        memoryValue = percentValue;
     }
-    else if (Math.abs(currentValue > 0)) {
-        percentValue = displayArray.join('');
+    else if (Math.abs(resultDisplay.textContent > 0)) {
+        percentValue = resultDisplay.textContent;
         percentValue = round(percentValue * .01, 4);
         memoryValue = percentValue;
     }

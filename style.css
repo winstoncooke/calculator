@@ -4,7 +4,7 @@
     font-family: 'Roboto', sans-serif;
     
     --screen-width: 100%;
-    --screen-height: 80vh;
+    --screen-height: 85vh;
     --calculator-width: 232px;
     --calculator-height: 321px;
     --btn-width: 25%;
@@ -147,7 +147,7 @@ main {
             margin-left: -50vw;
             margin-right: -50vw;
             max-width: 100%;
-            min-height: 80vh;
+            min-height: 85vh;
             width: var(--screen-width);
             height: var(--screen-height);
             border-radius: 0;
