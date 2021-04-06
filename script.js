@@ -38,6 +38,9 @@ let map = {};
 let sz = resultDisplay.style.fontSize;
 let size;
 
+root.style.setProperty('--screen-height', window.screen.availHeight);
+root.style.setProperty('--screen-width', window.screen.availWidth);
+
 window.addEventListener('keydown', function(e) {
     if(e.defaultPrevented) {
         return;

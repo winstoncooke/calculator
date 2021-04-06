@@ -21,6 +21,8 @@
     --btn-width: 25%;
     --btn-bottom-border-radius: .375em;
     --result-font-size: 3em;
+    --screen-height: 80vh;
+    --screen-width: 100vw;
 }
 
 *,
@@ -145,8 +147,8 @@ main {
             margin-left: -50vw;
             margin-right: -50vw;
             max-width: 100%;
-            width: 100vw;
-            height: 90vh;
+            width: var(--screen-width);
+            height: var(--screen-height);
             border-radius: 0;
         }
 
