@@ -134,11 +134,13 @@ function inputValue(num) {
 
 function updateDisplay(value) {   
     if(isEqualStateActive || resultDisplay.textContent === '0') resetDisplay();
-    displayArray.push(value);
+    if(resultDisplay.textContent.length < 32) {
+        displayArray.push(value);
     // resultDisplay.textContent = displayArray.join('');
     resultDisplay.textContent += value;
     clear.textContent = 'C';
     reduceFontSize();
+    }
 }
 
 function appendPoint() {
@@ -348,11 +350,11 @@ function returnNegateValue() {
             negateValue = memoryValue;
         }
         else {
-            negateValue = displayArray.join('');
+            negateValue = resultDisplay.textContent;
             negateValue *= -1;
         }
         lengthCounter++;
-        displayArray = [];
+        isEqualStateActive = true;
         inputValue(negateValue);
     }
 }
@@ -368,6 +370,6 @@ function returnPercent() {
         memoryValue = percentValue;
     }
     else return;
-    displayArray = [];
+    isEqualStateActive = true;
     inputValue(percentValue);
 }
