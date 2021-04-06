@@ -124,14 +124,12 @@ window.addEventListener('keydown', function(e) {
 function inputValue(num) {
     // Allow for new calculations after a previous calculation when not selecting
     // an storeValue    
-    console.log(isEqualStateActive);
     if(lengthCounter === 0) {
         resultDisplay.style.fontSize = '3em';
         sz = 3;
         size = '3em';
     }
     currentValue = num;
-    lengthCounter++;
     updateDisplay(currentValue);
 }
 
@@ -139,10 +137,10 @@ function updateDisplay(value) {
     if(isEqualStateActive || resultDisplay.textContent === '0') resetDisplay();
     if(resultDisplay.textContent.length < 32) {
         displayArray.push(value);
-    // resultDisplay.textContent = displayArray.join('');
-    resultDisplay.textContent += value;
-    clear.textContent = 'C';
-    reduceFontSize();
+        resultDisplay.textContent += value;
+        clear.textContent = 'C';
+        reduceFontSize();
+        lengthCounter++;
     }
 }
 
@@ -150,8 +148,6 @@ function appendPoint() {
     if(isEqualStateActive) resetDisplay();
     if(resultDisplay.textContent === '') resultDisplay.textContent = '0';
     if(resultDisplay.textContent.includes('.')) return;
-    // displayArray.push('.');
-    // resultDisplay.textContent = displayArray.join('');
     resultDisplay.textContent += '.';
     clear.textContent = 'C';
   }
@@ -162,37 +158,37 @@ function resetDisplay() {
 }
 
 function reduceFontSize() {   
-    if(lengthCounter === 16) {
+    if(lengthCounter === 20) {
         return resizeFontDown();
     }
-    else if(lengthCounter === 11) {
+    else if(lengthCounter === 13) {
+        return resizeFontDown();
+    }
+    else if(lengthCounter === 10) {
         return resizeFontDown();
     }
     else if(lengthCounter === 8) {
         return resizeFontDown();
     }
-    else if(lengthCounter === 7) {
-        return resizeFontDown();
-    }
-    else if(lengthCounter === 5) {
+    else if(lengthCounter === 6) {
         return resizeFontDown();
     } else return;
 }
 
 function increaseFontSize() {
-    if(lengthCounter === 4) {
-        return resizeFontUp();
-    }
-    else if(lengthCounter === 6) {
+    if(lengthCounter === 5) {
         return resizeFontUp();
     }
     else if(lengthCounter === 7) {
         return resizeFontUp();
     }
-    else if(lengthCounter === 10) {
+    else if(lengthCounter === 9) {
         return resizeFontUp();
     }
-    else if(lengthCounter === 15) {
+    else if(lengthCounter === 12) {
+        return resizeFontUp();
+    }
+    else if(lengthCounter === 19) {
         return resizeFontUp();
     }
 }
@@ -202,7 +198,6 @@ function resizeFontUp() {
   
     sz += 0.5;
     size = parseFloat(sz) + 'em';
-    console.log(size);
     resultDisplay.style.fontSize = size;
   }
 
@@ -211,7 +206,6 @@ function resizeFontUp() {
   
     sz -= 0.5;
     size = parseFloat(sz) + 'em';
-    console.log(size);
     resultDisplay.style.fontSize = size;
   }
 
@@ -328,18 +322,16 @@ function clearResult() {
 
 function deleteNumber() {
     if(lengthCounter > 1) {
-        displayArray.pop();
-        resultDisplay.textContent = displayArray.join('');
+        increaseFontSize();
+        resultDisplay.textContent = resultDisplay.textContent.toString().slice(0, -1);
     }
     else {
         resultDisplay.textContent = 0;
-        displayArray = [];
     }
-    
+
     if(lengthCounter > 0) {
         lengthCounter--;
     }
-    increaseFontSize();
 }
 
 function resetACCounter() {
