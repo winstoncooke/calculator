@@ -109,7 +109,8 @@ window.addEventListener('keydown', function(e) {
             appendPoint();
             break;
         case 'p':
-            inputValue(3.141592653589793);
+            // inputValue(3.141592653589793);
+            inputValue(3.14159);
             break;
         default:
             return;
@@ -120,6 +121,7 @@ window.addEventListener('keydown', function(e) {
 function inputValue(num) {
     // Allow for new calculations after a previous calculation when not selecting
     // an storeValue    
+    console.log(isEqualStateActive);
     if(lengthCounter === 0) {
         resultDisplay.style.fontSize = '3em';
         sz = 3;
@@ -131,56 +133,61 @@ function inputValue(num) {
 }
 
 function updateDisplay(value) {   
-    if((displayArray.length !== 0 || Math.abs(value) > 0) 
-        && lengthCounter < 18 && value !== '.') {
-        displayArray.push(value);
-        resultDisplay.textContent = displayArray.join('');
-        clear.textContent = 'C';
-    }
-    else if((displayArray.length !== 0 || Math.abs(value) > 0) 
-        && lengthCounter >= 38 && value !== '.') {
-        displayArray.push(0);
-        resultDisplay.textContent = displayArray.join('');
-        clear.textContent = 'C';
-    }
+    if(isEqualStateActive || resultDisplay.textContent === '0') resetDisplay();
+    displayArray.push(value);
+    // resultDisplay.textContent = displayArray.join('');
+    resultDisplay.textContent += value;
+    clear.textContent = 'C';
     reduceFontSize();
 }
 
 function appendPoint() {
-    if (resultDisplay.textContent === '') resultDisplay.textContent = '0';
-    if (resultDisplay.textContent.includes('.')) return;
-    displayArray.push('.');
-    resultDisplay.textContent = displayArray.join('');
-    // resultDisplay.textContent += '.';
+    if(isEqualStateActive) resetDisplay();
+    if(resultDisplay.textContent === '') resultDisplay.textContent = '0';
+    if(resultDisplay.textContent.includes('.')) return;
+    // displayArray.push('.');
+    // resultDisplay.textContent = displayArray.join('');
+    resultDisplay.textContent += '.';
     clear.textContent = 'C';
   }
 
+function resetDisplay() {
+    resultDisplay.textContent = '';
+    isEqualStateActive = false;   
+}
+
 function reduceFontSize() {   
-    if(lengthCounter === 17) {
+    if(lengthCounter === 16) {
         return resizeFontDown();
     }
-    else if(lengthCounter === 13) {
-        return resizeFontDown();
-    }
-    else if(lengthCounter === 10) {
+    else if(lengthCounter === 11) {
         return resizeFontDown();
     }
     else if(lengthCounter === 8) {
+        return resizeFontDown();
+    }
+    else if(lengthCounter === 7) {
+        return resizeFontDown();
+    }
+    else if(lengthCounter === 5) {
         return resizeFontDown();
     } else return;
 }
 
 function increaseFontSize() {
-    if(lengthCounter === 7) {
+    if(lengthCounter === 4) {
         return resizeFontUp();
     }
-    else if(lengthCounter === 9) {
+    else if(lengthCounter === 6) {
         return resizeFontUp();
     }
-    else if(lengthCounter === 12) {
+    else if(lengthCounter === 7) {
         return resizeFontUp();
     }
-    else if(lengthCounter === 16) {
+    else if(lengthCounter === 10) {
+        return resizeFontUp();
+    }
+    else if(lengthCounter === 15) {
         return resizeFontUp();
     }
 }
@@ -237,11 +244,12 @@ function round(value, decimals) {
 function connectResultToUpdateDisplay(result) {
     memoryValue = result;
     displayArray = [];
+    isEqualStateActive = true;
     updateDisplay(result);
+    isEqualStateActive = true;
     displayArray = [];
     currentValue = null;
     equalState = '';
-    isEqualStateActive = false;
     equalCounter--;
     decimalCount = 0;
     lengthCounter = 0;
@@ -283,7 +291,7 @@ function checkToOperate(state) {
 // memoryValue
 function storeValue(state) {
     if(currentValue !== null) {
-        memoryValue = Number(displayArray.join(''));
+        memoryValue = Number(resultDisplay.textContent);
     }
     else {
         memoryValue = result;
