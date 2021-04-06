@@ -25,16 +25,12 @@ const nineButton = document.getElementById('nine').addEventListener('click', (e)
 let result = null;
 let currentValue = 0;
 let memoryValue = 0;
-let displayArray = [];
-let acCounter = 0;
 let equalState = '';
 let isEqualStateActive = false;
 let equalCounter = 0;
 let percentValue;
 let negateValue;
-let decimalCount = 0;
 let lengthCounter = 0;
-let map = {};
 let sz = resultDisplay.style.fontSize;
 let size;
 
@@ -133,7 +129,6 @@ function inputValue(num) {
 function updateDisplay(value) {   
     if(isEqualStateActive || resultDisplay.textContent === '0') resetDisplay();
     if(resultDisplay.textContent.length < 32) {
-        displayArray.push(value);
         resultDisplay.textContent += value;
         clear.textContent = 'C';
         reduceFontSize();
@@ -239,15 +234,12 @@ function round(value, decimals) {
 
 function connectResultToUpdateDisplay(result) {
     memoryValue = result;
-    displayArray = [];
     isEqualStateActive = true;
     updateDisplay(result);
     isEqualStateActive = true;
-    displayArray = [];
     currentValue = null;
     equalState = '';
     equalCounter--;
-    decimalCount = 0;
     lengthCounter = 0;
 }
 
@@ -293,11 +285,9 @@ function storeValue(state) {
         memoryValue = result;
     }
     currentValue = 0;
-    displayArray = [];
     equalState = state;
     isEqualStateActive = true;
     equalCounter++;
-    decimalCount = 0;
     lengthCounter = 0;
 }
 
@@ -305,12 +295,9 @@ function clearResult() {
     result = null;
     currentValue = 0;
     memoryValue = 0;
-    displayArray = [];
-    acCounter = 0;
     equalState = '';
     isEqualStateActive = false;
     equalCounter = 0;
-    decimalCount = 0;
     lengthCounter = 0;
     resultDisplay.textContent = 0;
     resultDisplay.style.fontSize = '3em';
@@ -329,10 +316,6 @@ function deleteNumber() {
     if(lengthCounter > 0) {
         lengthCounter--;
     }
-}
-
-function resetACCounter() {
-    acCounter = 0;
 }
 
 function returnNegateValue() {
