@@ -35,6 +35,8 @@ let negateValue;
 let decimalCount = 0;
 let lengthCounter = 0;
 let map = {};
+let sz = resultDisplay.style.fontSize;
+let size;
 
 window.addEventListener('keydown', function(e) {
     if(e.defaultPrevented) {
@@ -119,7 +121,9 @@ function inputValue(num) {
     // Allow for new calculations after a previous calculation when not selecting
     // an storeValue    
     if(lengthCounter === 0) {
-        resultDisplay.style.fontSize = ('3em');
+        resultDisplay.style.fontSize = '3em';
+        sz = 3;
+        size = '3em';
     }
     currentValue = num;
     lengthCounter++;
@@ -139,7 +143,7 @@ function updateDisplay(value) {
         resultDisplay.textContent = displayArray.join('');
         clear.textContent = 'C';
     }
-    increaseFontSize();
+    reduceFontSize();
 }
 
 function appendPoint() {
@@ -151,35 +155,53 @@ function appendPoint() {
     clear.textContent = 'C';
   }
 
-function increaseFontSize() {   
-    if(lengthCounter > 16) {
-        resultDisplay.style.fontSize = ('1em');
+function reduceFontSize() {   
+    if(lengthCounter === 17) {
+        return resizeFontDown();
     }
-    else if(lengthCounter > 12) {
-        resultDisplay.style.fontSize = ('1.5em');
+    else if(lengthCounter === 13) {
+        return resizeFontDown();
     }
-    else if(lengthCounter > 9) {
-        resultDisplay.style.fontSize = ('2em');
+    else if(lengthCounter === 10) {
+        return resizeFontDown();
     }
-    else if(lengthCounter > 7 || percentValue > 11111.) {
-        resultDisplay.style.fontSize = ('2.5em');
+    else if(lengthCounter === 8) {
+        return resizeFontDown();
+    } else return;
+}
+
+function increaseFontSize() {
+    if(lengthCounter === 7) {
+        return resizeFontUp();
+    }
+    else if(lengthCounter === 9) {
+        return resizeFontUp();
+    }
+    else if(lengthCounter === 12) {
+        return resizeFontUp();
+    }
+    else if(lengthCounter === 16) {
+        return resizeFontUp();
     }
 }
 
-function reduceFontSize() {
-    if(lengthCounter <= 7) {
-        resultDisplay.style.fontSize = ('3em');
-    }
-    else if(lengthCounter <= 9) {
-        resultDisplay.style.fontSize = ('2.5em');
-    }
-    else if(lengthCounter <= 12) {
-        resultDisplay.style.fontSize = ('2em');
-    }
-    else if(lengthCounter <= 16) {
-        resultDisplay.style.fontSize = ('1.5em');
-    }
-}
+function resizeFontUp() {
+    if (sz === '') sz = 3; //default font size
+  
+    sz += 0.5;
+    size = parseFloat(sz) + 'em';
+    console.log(size);
+    resultDisplay.style.fontSize = size;
+  }
+
+  function resizeFontDown() {
+    if (sz === '') sz = 3; //default font size
+  
+    sz -= 0.5;
+    size = parseFloat(sz) + 'em';
+    console.log(size);
+    resultDisplay.style.fontSize = size;
+  }
 
 function operator() {
     if(currentValue !== null) {
@@ -287,7 +309,7 @@ function clearResult() {
     decimalCount = 0;
     lengthCounter = 0;
     resultDisplay.textContent = 0;
-    resultDisplay.style.fontSize = ('3em');
+    resultDisplay.style.fontSize = '3em';
     clear.textContent = 'AC';
 }
 
@@ -304,7 +326,7 @@ function deleteNumber() {
     if(lengthCounter > 0) {
         lengthCounter--;
     }
-    reduceFontSize();
+    increaseFontSize();
 }
 
 function resetACCounter() {

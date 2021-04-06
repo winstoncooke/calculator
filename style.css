@@ -151,8 +151,8 @@ main {
         }
 
         .result-container {
-            height: 35%;
             font-size: 2.5em;
+            height: 35%;
         }
 
         .result {
