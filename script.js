@@ -10,7 +10,7 @@ const multiplier = document.getElementById('multiply').addEventListener('click',
 const subtraction = document.getElementById('subtract').addEventListener('click', subtract);
 const addition = document.getElementById('add').addEventListener('click', add);
 const equal = document.getElementById('equal').addEventListener('click', operator);
-const decimal = document.getElementById('decimal').addEventListener('click',  (e) => {inputValue('.')});
+const decimal = document.getElementById('decimal').addEventListener('click', appendPoint);
 const zeroButton = document.getElementById('zero').addEventListener('click', (e) => {inputValue(0)});
 const oneButton = document.getElementById('one').addEventListener('click', (e) => {inputValue(1)});
 const twoButton = document.getElementById('two').addEventListener('click', (e) => {inputValue(2)});
@@ -212,7 +212,7 @@ function resizeFontUp() {
 
 function operator() {
     if(currentValue !== null) {
-        currentValue = Number(displayArray.join(''));    
+        currentValue = Number(resultDisplay.textContent);    
     } else return;
     
     if(equalState === 'addition') {
