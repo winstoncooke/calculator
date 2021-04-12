@@ -49,8 +49,7 @@ window.addEventListener('keydown', function(e) {
         case 'Backspace':
             deleteNumber(); //Add function
             break;
-        // add option & minus keys together
-        case ('Option' || 'Alt'):
+        case ('–'):
             returnNegateValue();
             break;
         case '%':
@@ -305,6 +304,10 @@ function clearResult() {
     resultDisplay.textContent = 0;
     resultDisplay.style.fontSize = '3em';
     clear.textContent = 'AC';
+    addition.style.setProperty('border', '1px var(--calculator-background) solid');
+    subtraction.style.setProperty('border', '1px var(--calculator-background) solid');
+    multiplier.style.setProperty('border', '1px var(--calculator-background) solid');
+    division.style.setProperty('border', '1px var(--calculator-background) solid');
 }
 
 function deleteNumber() {
