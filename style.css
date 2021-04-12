@@ -108,8 +108,8 @@ main {
 
 #divide,
 #multiply,
-#subtract,
-#add,
+#minus,
+#plus,
 #equal {
     background-color: var(--btn-operators-background);
     color: var(--btn-operators);
@@ -117,8 +117,8 @@ main {
 
 #divide:active,
 #multiply:active,
-#subtract:active,
-#add:active,
+#minus:active,
+#plus:active,
 #equal:active {
     background-color: var(--btn-operators-active);
 }

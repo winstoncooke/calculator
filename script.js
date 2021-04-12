@@ -5,10 +5,14 @@ clear.addEventListener('click', clearResult);
 const calcKeys = document.querySelector('.btn-container');
 const positiveNegative = document.getElementById('positive-negative').addEventListener('click', returnNegateValue);
 const percent = document.getElementById('percent').addEventListener('click', returnPercent);
-const division = document.getElementById('divide').addEventListener('click', divide);
-const multiplier = document.getElementById('multiply').addEventListener('click', multiply);
-const subtraction = document.getElementById('subtract').addEventListener('click', subtract);
-const addition = document.getElementById('add').addEventListener('click', add);
+const division = document.getElementById('divide');
+division.addEventListener('click', divide);
+const multiplier = document.getElementById('multiply');
+multiplier.addEventListener('click', multiply);
+const subtraction = document.getElementById('minus');
+subtraction.addEventListener('click', subtract);
+const addition = document.getElementById('plus');
+addition.addEventListener('click', add);
 const equal = document.getElementById('equal').addEventListener('click', operator);
 const decimal = document.getElementById('decimal').addEventListener('click', appendPoint);
 const zeroButton = document.getElementById('zero').addEventListener('click', (e) => {inputValue(0)});
@@ -38,7 +42,6 @@ window.addEventListener('keydown', function(e) {
     if(e.defaultPrevented) {
         return;
     }
-
     switch(e.key) {
         case 'Escape':
             clearResult();
@@ -209,14 +212,17 @@ function operator() {
     if(equalState === 'addition') {
         result = round((memoryValue + currentValue), 4);
         connectResultToUpdateDisplay(result);
+        addition.style.setProperty('border', '1px var(--calculator-background) solid');
     }
     else if(equalState === 'subtraction') {           
         result = round((memoryValue - currentValue), 4);
         connectResultToUpdateDisplay(result);
+        subtraction.style.setProperty('border', '1px var(--calculator-background) solid');
     }
     else if(equalState === 'multiplication') {
         result = round((memoryValue * currentValue), 4);
         connectResultToUpdateDisplay(result);
+        multiplier.style.setProperty('border', '1px var(--calculator-background) solid');
     }
     else if(equalState === 'division') {
         if(currentValue === 0) {
@@ -224,6 +230,7 @@ function operator() {
         } else {
             result = round((memoryValue / currentValue), 4);
             connectResultToUpdateDisplay(result);
+            division.style.setProperty('border', '1px var(--calculator-background) solid');
         }
     }
 }
@@ -244,27 +251,23 @@ function connectResultToUpdateDisplay(result) {
 }
 
 function add() {
-    // highlight + button
+    addition.style.setProperty('border', '1px var(--border) solid');
     checkToOperate('addition');
-    // Unhighlight + button
 }
 
 function subtract() {
-    // highlight + button
+    subtraction.style.setProperty('border', '1px var(--border) solid');
     checkToOperate('subtraction');
-    // Unhighlight + button
 }
 
 function multiply() {
-    // highlight + button
+    multiplier.style.setProperty('border', '1px var(--border) solid');
     checkToOperate('multiplication');
-    // Unhighlight + button
 }
 
 function divide() {
-    // highlight + button
+    division.style.setProperty('border', '1px var(--border) solid');
     checkToOperate('division');
-    // Unhighlight + button
 }
 
 // Enables operator button to serve the same function as the equal sign
