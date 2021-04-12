@@ -343,7 +343,7 @@ function returnPercent() {
         percentValue = round(memoryValue * .01, 4);
         memoryValue = percentValue;
     }
-    else if (Math.abs(resultDisplay.textContent > 0)) {
+    else if (Math.abs(currentValue) > 0) {
         percentValue = resultDisplay.textContent;
         percentValue = round(percentValue * .01, 4);
         memoryValue = percentValue;
