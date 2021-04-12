@@ -34,7 +34,6 @@ let isEqualStateActive = false;
 let equalCounter = 0;
 let percentValue;
 let negateValue;
-let lengthCounter = 0;
 let sz = resultDisplay.style.fontSize;
 let size;
 
@@ -118,14 +117,12 @@ window.addEventListener('keydown', function(e) {
 
 function inputValue(num) {
     // Allow for new calculations after a previous calculation when not selecting
-    // an storeValue    
-    if(lengthCounter === 0) {
-        resultDisplay.style.fontSize = '3em';
-        sz = 3;
-        size = '3em';
-    }
+    // a storeValue    
     currentValue = num;
     updateDisplay(currentValue);
+    if(resultDisplay.textContent.length === 1) {
+        updateSize(3);
+    }
 }
 
 function updateDisplay(value) {   
@@ -134,7 +131,6 @@ function updateDisplay(value) {
         resultDisplay.textContent += value;
         clear.textContent = 'C';
         reduceFontSize();
-        lengthCounter++;
     }
 }
 
@@ -148,43 +144,67 @@ function appendPoint() {
 
 function resetDisplay() {
     resultDisplay.textContent = '';
-    isEqualStateActive = false;   
+    isEqualStateActive = false;
 }
 
 function reduceFontSize() {   
-    if(lengthCounter === 20) {
+    if(resultDisplay.textContent.length === 20) {
         return resizeFontDown();
     }
-    else if(lengthCounter === 13) {
+    else if(resultDisplay.textContent.length === 13) {
         return resizeFontDown();
     }
-    else if(lengthCounter === 10) {
+    else if(resultDisplay.textContent.length === 10) {
         return resizeFontDown();
     }
-    else if(lengthCounter === 8) {
+    else if(resultDisplay.textContent.length === 8) {
         return resizeFontDown();
     }
-    else if(lengthCounter === 6) {
+    else if(resultDisplay.textContent.length === 6) {
         return resizeFontDown();
     } else return;
 }
 
+function reduceResultFontSize() {   
+    if(resultDisplay.textContent.length >= 20) {
+        return updateSize(0.5);
+    }
+    else if(resultDisplay.textContent.length >= 13) {
+        return updateSize(1);
+    }
+    else if(resultDisplay.textContent.length >= 10) {
+        return updateSize(1.5);
+    }
+    else if(resultDisplay.textContent.length >= 8) {
+        return updateSize(2);
+    }
+    else if(resultDisplay.textContent.length >= 6) {
+        return updateSize(2.5);
+    } else return updateSize(3);
+}
+
 function increaseFontSize() {
-    if(lengthCounter === 5) {
+    if(resultDisplay.textContent.length === 5) {
         return resizeFontUp();
     }
-    else if(lengthCounter === 7) {
+    else if(resultDisplay.textContent.length === 7) {
         return resizeFontUp();
     }
-    else if(lengthCounter === 9) {
+    else if(resultDisplay.textContent.length === 9) {
         return resizeFontUp();
     }
-    else if(lengthCounter === 12) {
+    else if(resultDisplay.textContent.length === 12) {
         return resizeFontUp();
     }
-    else if(lengthCounter === 19) {
+    else if(resultDisplay.textContent.length === 19) {
         return resizeFontUp();
-    }
+    } else return;
+}
+
+function updateSize(newSz) {
+    sz = newSz;
+    size = parseFloat(sz) + 'em';
+    resultDisplay.style.fontSize = size;
 }
 
 function resizeFontUp() {
@@ -241,12 +261,12 @@ function round(value, decimals) {
 function connectResultToUpdateDisplay(result) {
     memoryValue = result;
     isEqualStateActive = true;
-    updateDisplay(result);
+    resultDisplay.textContent = result;
+    reduceResultFontSize();
     isEqualStateActive = true;
     currentValue = null;
     equalState = '';
     equalCounter--;
-    lengthCounter = 0;
 }
 
 function add() {
@@ -290,7 +310,6 @@ function storeValue(state) {
     equalState = state;
     isEqualStateActive = true;
     equalCounter++;
-    lengthCounter = 0;
 }
 
 function clearResult() {
@@ -300,7 +319,6 @@ function clearResult() {
     equalState = '';
     isEqualStateActive = false;
     equalCounter = 0;
-    lengthCounter = 0;
     resultDisplay.textContent = 0;
     resultDisplay.style.fontSize = '3em';
     clear.textContent = 'AC';
@@ -311,16 +329,12 @@ function clearResult() {
 }
 
 function deleteNumber() {
-    if(lengthCounter > 1) {
-        increaseFontSize();
+    if(currentValue != null && resultDisplay.textContent.length > 1) {
         resultDisplay.textContent = resultDisplay.textContent.toString().slice(0, -1);
+        increaseFontSize();
     }
-    else {
+    else if (currentValue != null) {
         resultDisplay.textContent = 0;
-    }
-
-    if(lengthCounter > 0) {
-        lengthCounter--;
     }
 }
 
@@ -334,10 +348,6 @@ function returnNegateValue() {
             negateValue = resultDisplay.textContent;
             negateValue *= -1;
         }
-        
-        if(negateValue < 1) {
-            lengthCounter++;
-        } else lengthCounter--;
         
         isEqualStateActive = true;
         inputValue(negateValue);
